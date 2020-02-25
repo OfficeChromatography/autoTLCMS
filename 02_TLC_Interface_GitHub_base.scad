@@ -1,9 +1,63 @@
-// Old Base and Base
+// Old Base and Base GitHub v1.1
 // TLC interface automatisation for camag interface
 // 2019 February by Tim Häbe
 
 //////////   
-module base(){
+module base_view(){
+    difference(){
+        color("silver") union(){
+            translate([0,239,-35]) cube([68,98,40],center=true);
+                CubePoints3=[ 
+            [-115.02,-115.02,-55.02],  
+            [ 115.02,-115.02,-55.02],  
+            [ 115.02, 205.02,-55.02],  
+            [-115.02, 205.02,-55.02], 
+            [-104.02,-104.02,-14.98],  
+            [ 104.02,-104.02,-14.98],  
+            [ 104.02, 194.02,-14.98], 
+            [-104.02, 194.02,-14.98]];   
+            CubeFaces3=[[0,1,2,3],[4,5,1,0],[7,6,5,4],[5,6,2,1],[6,7,3,2],[7,4,0,3]];  
+            polyhedron(CubePoints3,CubeFaces3);}        
+            color ("orange") for(i = [-1,1]){
+                //big cutout left//
+                hull(){
+                    translate([i*67,-67,-56]) cylinder(h=33, r=30);
+                    translate([i*67,157,-56]) cylinder(h=33, r=30);
+                    translate([i*42,-89,-56]) cylinder(h=33, r=8);
+                    translate([i*42,179,-56]) cylinder(h=33, r=8);
+                    }
+                ///small cutout front left///
+                hull(){
+                    translate([i*12,-89,-56]) cylinder(h=33, r=8);
+                    translate([i*18,-89,-56]) cylinder(h=33, r=8);
+                    translate([i*12,-30,-56]) cylinder(h=33, r=8);
+                    translate([i*18,-25,-56]) cylinder(h=33, r=8);
+                    }
+                ///small cutout back left///
+                hull(){
+                    translate([i*12, 30,-56]) cylinder(h=33, r=8);
+                    translate([i*18, 25,-56]) cylinder(h=33, r=8);
+                    translate([i*12,271,-56]) cylinder(h=33, r=8);
+                    translate([i*18,271,-56]) cylinder(h=33, r=8);
+                    }
+            }
+        color("red") union(){//screw holes//
+            //front//
+            translate([-20,-35,-24]) cylinder(h=5,r=2,$fn=60,cetner=true);
+            translate([20,-35,-24]) cylinder(h=5,r=2,$fn=60,cetner=true);
+            //back//
+            translate([80,167,-24]) cylinder(h=5,r=2,$fn=60,cetner=true);
+            translate([-80,167,-24]) cylinder(h=5,r=2,$fn=60,cetner=true);
+            //pedestal//
+            translate([ 95,-95,-55.01]) cylinder(h=5, r=2,$fn=60);
+            translate([-95,-95,-55.01]) cylinder(h=5, r=2,$fn=60);
+            translate([ 95,185,-55.01]) cylinder(h=5, r=2,$fn=60);
+            translate([-95,185,-55.01]) cylinder(h=5, r=2,$fn=60);
+            }
+        }
+    } 
+       
+ module base(){  
     difference(){
         color("silver") union(){
             translate([0,239,-35]) cube([68,98,40],center=true);
@@ -55,7 +109,7 @@ module base(){
             translate([-95,185,-55.01]) cylinder(h=5, r=2,$fn=60);
             }
         }
-    } 
+    }   
    
 module baseplate(){
     difference(){
@@ -272,14 +326,14 @@ top_cover_neg_z_bias = 65;
     color("yellow") translate([0,195,110]) rotate([-16,10]) cylinder(h=20,d=5);  
     color("yellow") translate([0,195,110]) rotate([-16,-10]) cylinder(h=20,d=5);
     }
-       
+  
 //////////   
 module full_view_oldbase(){
-base();
-baseplate();
+    base();
+    baseplate();
     connections();       
     pedestals01();
-stamp_stage();
+    stamp_stage();
     stamp();
     drawer();
     top_cover();
@@ -290,8 +344,20 @@ stamp_stage();
     }
     
 module full_view_base(){
-base();
-baseplate();
+    base();
+    baseplate();
+    connections();          
+    stamp_stage();
+    stamp();
+    drawer();
+    laser();
+    gasvalve();
+    translate([0,-20,20]) valve_6port();       
+    }
+    
+module full_base_view(){
+    base_view();
+    baseplate();
     connections();          
     stamp_stage();
     stamp();
