@@ -1,10 +1,96 @@
-// Top Covers
+// Top Covers GitHub v1.1
 // TLC interface automatisation for camag interface
 // 2019 February by Tim Häbe
 
 use <02_TLC_Interface_GitHub_base.scad>
 
+//base();
 ////////////////////// 
+top_covers_view();
+//top_covers_print();
+
+purger_view();
+//purger_print();
+
+nuc_view();
+//nuc_print();
+
+monitor_all_print();
+//monitor_all_view();
+
+module top_covers_view(){
+    color("brown") stamp_cover();
+    color("brown") stamp_cover_back();
+    color("brown") electronic_port();
+}
+ 
+module top_covers_print(){
+    stamp_cover_print();
+    stamp_cover_back_print();
+    electronic_port_print();
+    stamp_cover_no_monitor_print();
+}
+
+module purger_view(){
+    color("violet") purger(); 
+}
+
+module purger_print(){
+    color("violet") translate([0,0,0]) purger();
+}
+    
+module nuc_view(){
+    color("brown") translate([0,450,-10]) rotate([180,0,0]) nuc();
+}
+ 
+module nuc_print(){
+    color("brown") translate([0,450,-40]) nuc();   
+}
+
+module monitor_all_view(){ 
+    monitor_front_aligned();
+    monitor_back1_aligned();
+    monitor_back2_aligned();
+    monitor_back3_aligned();
+    monitor_mount_aligned(); 
+} 
+
+module monitor_all_print(){
+    monitor_back1_print();   
+    monitor_back2_print();     
+    monitor_back3_print(); 
+    monitor_mount_print();
+} 
+
+module stamp_cover_print(){
+     color("brown") translate([0,-30,30]) stamp_cover();
+}
+    
+module stamp_cover_back_print(){
+    color("brown") translate([0,30,30]) stamp_cover_back();
+}
+
+module electronic_port_print(){
+    color("brown") translate([0,60,0]) electronic_port();
+}
+
+module stamp_cover_no_monitor_print(){
+    color("brown") translate([-90,-30,30]) stamp_cover_no_monitor();
+    }
+
+module stamp_cover_no_monitor(){
+     difference(){
+     hull(){
+     translate([ 34,-22,116])cylinder(h=7, r=7,center=true,$fn=60); 
+     translate([-34,-22,116])cylinder(h=7, r=7,center=true,$fn=60); 
+     translate([ 40,104,116])cylinder(h=7, r=1,center=true,$fn=60); 
+     translate([-40,104,116])cylinder(h=7, r=1,center=true,$fn=60);      
+     }
+     stamp_stage_negative_no_monitor();
+     translate([0,105,114.5]) rotate([-25,0,0]) cube([100,10,10],center=true); 
+ 
+    }
+}
 
 module stamp_cover(){
      difference(){
@@ -17,8 +103,8 @@ module stamp_cover(){
     stamp_stage_negative();
     translate([0,105,114.5]) rotate([-25,0,0]) cube([100,10,10],center=true); 
     monitor_mount_neg2(); 
-    }}
-
+    }
+}
 
 module stamp_cover_neg(){   
      hull(){
@@ -27,7 +113,8 @@ module stamp_cover_neg(){
      translate([ 40,104,116])cylinder(h=7, r=1,center=true,$fn=60); 
      translate([-40,104,116])cylinder(h=7, r=1,center=true,$fn=60);      
      }
-     }
+}
+     
 module stamp_cover_back(){
      difference(){
      union(){ 
@@ -44,10 +131,9 @@ module stamp_cover_back(){
           ////gas_inlet
             translate([-11,260,111])cylinder(h=2,r=20,$fn=60);
           ////corner box   
-           //  translate([18.8,278.5,101.5]) cube([15,10,12]);      
-             
+          //translate([18.8,278.5,101.5]) cube([15,10,12]);                   
             }  
-        ////cutouts
+          ////cutouts
             //rheodyne
             translate([0,199.75,106])cylinder(h=15,r=1.5,$fn=60);      
             translate([0,150.25,106])cylinder(h=15,r=1.5,$fn=60);    
@@ -101,10 +187,8 @@ module stamp_cover_back(){
             translate([0,96,118.5]) rotate([-25,0,0]) cube([100,10,20],center=true); 
             ////coner box screw
             translate([26,284,106.5]) rotate([90,0,0]) cylinder(h=10, r=1.4,center=true,$fn=60);      
-            }    
-            
-        }
-
+    }         
+}
 
 module electronic_port(){ 
     difference(){ 
@@ -221,7 +305,6 @@ module all_ports(){
         translate([0,88.65,0]) port_outcut(); 
     }
     }
-  
 
     module port_outcut(){
         difference(){
@@ -675,6 +758,63 @@ module stamp_stage_negative(){
         translate([ 36.5,294.6,55]) rotate([90,0,0]) cylinder(h=  4, r=3,center=true,$fn=60); 
         translate([-36.5,291.75,55]) rotate([90,0,0]) cylinder(h=10, r=1.5,center=true,$fn=60);   
         translate([-36.5,294.6,55]) rotate([90,0,0]) cylinder(h=  4, r=3,center=true,$fn=60); 
+    
+         translate([-9,260,79]) cube([50,50,63],center=true);
+         translate([-9,260,20]) cylinder(h=66, r1=16,r2=17.5,center=true,$fn=60); 
+         //gas suply
+         translate([-12,294,77]) rotate([90,0,0]) cylinder(h=18, r=8,center=true,$fn=60);  
+         
+         //laser cutout
+         hull(){
+         translate([-32,-9,76]) rotate([0,90,0]) cylinder(h=18, r=2,center=true,center=true,$fn=60); 
+         translate([-32, 9,76]) rotate([0,90,0]) cylinder(h=18, r=2,center=true,center=true,$fn=60);  
+         translate([-32,-9,47]) rotate([0,90,0]) cylinder(h=18, r=2,center=true,center=true,$fn=60); 
+         translate([-32, 9,47]) rotate([0,90,0]) cylinder(h=18, r=2,center=true,center=true,$fn=60);}
+         translate([-28,-15,63]) rotate([90,0,0]) cylinder(h=20, r=3,center=true,$fn=60);  
+ }  
+
+module stamp_stage_negative_no_monitor(){ 
+    union(){$fn=60; 
+        translate([0,0,69]) cube([45,45,38],center=true);
+        ////top stemp holder (adjust y for visbility)
+        translate([0,4,109]) cube([70,62,11],center=true);       
+        //translate([0,-25, 91]) cube([70,4,25],center=true);
+        
+        translate([-29,-25.5,116]) cube([7,4,5],center=true);
+        translate([29,-25.5,116]) cube([7,4,5],center=true);}        
+        for(i=[-1,1]){
+            translate([i*37,133,80.5]) cube([6.5,311,66],center=true);
+            translate([i*37,150,29]) cube([6.5,277,39],center=true);
+            translate([i*37,247,-22.5]) cube([6.5,83,66],center=true);}
+        //safetyswitch rods
+        translate([-34,-15,78]) rotate([0,90,0]) cylinder(h=13, r=1.5,center=true,center=true,$fn=60); 
+        translate([-34,-6,100]) rotate([0,90,0]) cylinder(h=13, r=1.5,center=true,center=true,$fn=60); 
+        //roller
+        translate([0,28,27]) rotate([0,90,0]) cylinder(h=70, r=4,center=true,center=true,$fn=60); 
+        //shield cutout
+        difference(){
+            hull(){
+                translate([ 34,-22,112.75])cylinder(h=3.5, r=7.01,center=true,$fn=60); 
+                translate([-34,-22,112.75])cylinder(h=3.5, r=7.01,center=true,$fn=60);}
+            hull(){
+                translate([ 54,-14.8,112.5])cylinder(h=4, r=7.01,center=true,$fn=60); 
+                translate([-54,-14.8,112.5])cylinder(h=4, r=7.01,center=true,$fn=60);}
+            }
+        //screws
+        color("red") union(){
+        translate([30,27,114]) cylinder(h=10, r=1.5,center=true,$fn=60); 
+        translate([30,27,118.1]) cylinder(h=3, r=3,center=true,$fn=60); 
+        translate([-30,27,114]) cylinder(h=10, r=1.5,center=true,$fn=60); 
+        translate([-30,27,118.1]) cylinder(h=3, r=3,center=true,$fn=60);  
+        } 
+        //opening
+        translate([0,98.5,116.5]) rotate([45,0,0]) cube([16,19,10],center=true); 
+        translate([0,100,114]) cube([16,5,5],center=true);  
+        //screws back
+        translate([ 36.5,291.75,55]) rotate([90,0,0]) cylinder(h=10, r=1.5,center=true,$fn=60); 
+        translate([ 36.5,294.6,55]) rotate([90,0,0]) cylinder(h=  4, r=3,center=true,$fn=60); 
+        translate([-36.5,291.75,55]) rotate([90,0,0]) cylinder(h=10, r=1.5,center=true,$fn=60);   
+        translate([-36.5,294.6,55]) rotate([90,0,0]) cylinder(h=  4, r=3,center=true,$fn=60); 
         
              
          translate([-9,260,79]) cube([50,50,63],center=true);
@@ -742,8 +882,19 @@ module spacer(){
 
 module purger(){
     difference(){ 
-        union(){
-            
+        union(){         
+            hull(){
+               translate([32.5,12.5,49]) sphere (r=1,$fn=60); 
+               translate([32.5,38,49]) sphere (r=1,$fn=60); 
+               translate([32.5,12.5,49]) sphere (r=1,$fn=60); 
+               translate([32.5,38,102.5]) sphere (r=1,$fn=60);  
+               translate([32.5,12.5,102.5]) sphere (r=1,$fn=60);
+               translate([32.5,12.5,49]) sphere (r=1,$fn=60); 
+               translate([23.5,38,49]) sphere (r=1,$fn=60); 
+               translate([23.5,12.5,49]) sphere (r=1,$fn=60); 
+               translate([23.5,38,102.5]) sphere (r=1,$fn=60);  
+               translate([23.5,12.5,102.5]) sphere (r=1,$fn=60);           
+            }
             hull(){
                 translate([23.5,23.5,45]) sphere (r=1,$fn=60);               
                 translate([23.5,38,45]) sphere (r=1,$fn=60); 
@@ -752,7 +903,8 @@ module purger(){
                 translate([23.5,23.5,100]) sphere (r=1,$fn=60);               
                 translate([23.5,38,100]) sphere (r=1,$fn=60); 
                 translate([8.5,23.5,45]) sphere (r=1,$fn=60);               
-                translate([8.5,38,45]) sphere (r=1,$fn=60); }
+                translate([8.5,38,45]) sphere (r=1,$fn=60);
+            }
             hull(){
                 translate([32.5,12.5,49]) sphere (r=1,$fn=60); 
                 translate([32.5,12.5,45]) sphere (r=1,$fn=60); 
@@ -763,7 +915,8 @@ module purger(){
                 translate([2,20,49]) sphere (r=1,$fn=60); 
                 translate([2,20,45]) sphere (r=1,$fn=60);
                 translate([20,12.5,49]) sphere (r=1,$fn=60); 
-                translate([20,12.5,45]) sphere (r=1,$fn=60);}  
+                translate([20,12.5,45]) sphere (r=1,$fn=60);
+            }  
               
                 translate([17,17,51]) cylinder(h=2, r=1.8,center=true,$fn=60);  
             ////pipe           
@@ -789,8 +942,10 @@ module purger(){
         translate([0,0,0]) rotate([-30.1,10.2,0]) cylinder(h=53.2, r1=2.3, r2=1.3,$fn=60);    
         ////srews
         translate([30,27,105]) cylinder(h=24, r=1.3,center=true,$fn=60);
-        } 
+        ////cover negs
+        stamp_cover();    
     }
+}
     
 module monitor_front(){
          difference(){
@@ -860,7 +1015,7 @@ module monitor_front(){
                 }      
         }
 
-module monitor_back(){ 
+module monitor_back1(){ 
             difference(){union(){    
             ////posts                 
             translate([ 117.75, 79.25,0.75]) cylinder(h=2.2, r=3, $fn=60);                  
@@ -1045,23 +1200,51 @@ module monitor_back3(){
         }
  }    
 
-module monitor_all(){ 
+module monitor_front_aligned(){       
+    translate([0,22,180]) rotate([45,0,0]) monitor_front();   
+} 
+
+module monitor_back1_aligned(){ 
+    translate([0,22,180]) rotate([45,0,0]) monitor_back1();        
+} 
+
+module monitor_back2_aligned(){ 
+    translate([0,22,180]) rotate([45,0,0]) monitor_back2();     
+}  
+
+module monitor_back3_aligned(){ 
         difference(){ 
-        translate([0,22,180]) rotate([45,0,0]) union(){
-  
-        //monitor_front();
-        color("grey") union(){
-        translate([0,-20,160]) monitor_back();
-        translate([0,130,0]) monitor_back2();
-        translate([0,100,0]) monitor_back3();
-        translate([0,-100,-50]) rotate([-45,0,0]) monitor_mount();}
-        }
- color("green") union(){
-        //stamp_cover_neg();
-        //stamp_stage_negative();
-        //monitor_mount_neg();   
-    }     }
-}      
+        translate([0,22,180]) rotate([45,0,0]) monitor_back3();
+
+        stamp_cover_neg();
+        stamp_stage_negative();
+        monitor_mount_neg();   
+    }     
+}  
+
+module monitor_mount_aligned(){ 
+    difference(){ 
+        monitor_mount();
+        
+        stamp_stage_negative();   
+    }   
+}  
+
+module monitor_back1_print(){   
+   translate([0,-50, 80]) monitor_back1_aligned();
+}
+ 
+module monitor_back2_print(){     
+   translate([0,15,80]) monitor_back2_aligned();
+}
+
+module monitor_back3_print(){ 
+   translate([0,0,60]) monitor_back3_aligned();
+}
+
+module monitor_mount_print(){
+   translate([0,0,0]) monitor_mount_aligned(); 
+}
         
 module monitor_mount(){
         difference(){
@@ -1332,4 +1515,3 @@ module nuc(){
         }
     }        
  }   
-

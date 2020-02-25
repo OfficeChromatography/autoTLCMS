@@ -1,4 +1,4 @@
-// All Drives 
+// All Drives GitHub v1.1
 // TLC interface automatisation for camag interface
 // 2019 February by Tim Häbe
 
@@ -8,26 +8,90 @@ use <03_TLC_Interface_GitHub_connections.scad>
 use <04_TLC_Interface_GitHub_rodholder.scad>
 
 //////////
-module Y_carriers_all(){
+Y_carriers_view();
+Y_carriers_all_print();
+
+module Y_carriers_all_print(){ 
+    Y_carriers_print();
+    
+    X_rod_adjust_R_print();
+    X_rod_adjust_L_print();   
+    
+    base_traverse_print();
+    
+    bearing_cover_R_print();
+    bearing_cover_L_print();
+}
+
+module Y_carriers_view(){   
+    Y_carriers_aligned();
+    
+    X_rod_adjust_L_aligned();
+    X_rod_adjust_R_aligned();   
+    
+    color("grey") base_traverse();
+    
+    color("grey") translate ([0,-10,0]) mirror ([0,0,0]) linearbearing_cover();
+    color("grey") translate ([0,-10,0]) mirror ([1,0,0]) linearbearing_cover();
+}
+
+module Y_carriers_print(){
     difference(){ 
         union(){
             translate([-100,0,0]) mirror (1,0,0) Y_carrier_hull_R();
-            translate([100,0,0]) Y_carrier_hull_R();
-           translate([100,0,0]) base_carrier();}
-                             
-           translate([-100,0,0]) Y_carriers_in();
-           translate([100,0,0]) Y_carriers_in();
-           translate([100,0,0])  mirror (1,0,0) Y_gearing_out_R();
-           translate([100,0,0])                       Y_gearing_out_R();     
-        
+            translate([ 100,0,0])                Y_carrier_hull_R();
             
-            drilling_holes_base();
-            translate([100,0,0])    nema14_cutout();      
-            translate ([139.5,20,4]) rotate([180,180]) endstop();                    
-            }
-            translate([100,0,0]) X_carrier_adjust_L();
-            translate([-100,0,0]) X_carrier_adjust_R();
-        }
+            translate([ 100,0,0]) base_carrier();
+        }             
+        translate([-100,0,0]) Y_carriers_in();
+        translate([ 100,0,0]) Y_carriers_in();
+        
+        translate([ 100,0,0]) mirror (1,0,0) Y_gearing_out_R();
+        translate([ 100,0,0])                Y_gearing_out_R();     
+        
+        translate([-100,0,0])  drilling_holes_base();
+        translate([ 100,0,0])  drilling_holes_base();
+        
+        translate([100,0,0]) nema14_cutout(); 
+        
+        translate ([139.5,20,4]) rotate([180,180]) endstop();                    
+    } 
+}
+  
+module Y_carriers_aligned(){
+    difference(){ 
+        union(){
+            mirror (1,0,0) Y_carrier_hull_R();
+            Y_carrier_hull_R();
+            
+            base_carrier();
+        }             
+        Y_carriers_in();
+        Y_carriers_in();
+        
+        mirror (1,0,0) Y_gearing_out_R();
+        Y_gearing_out_R();     
+        
+        drilling_holes_base();
+        drilling_holes_base();
+        
+        nema14_cutout(); 
+        
+        translate ([139.5,20,4]) rotate([180,180]) endstop();                    
+    }  
+}
+
+module bearing_cover_L_print(){
+    translate([100,0,0]) linearbearing_cover();
+}   
+
+module bearing_cover_R_print(){    
+    translate([-100,0,0]) mirror ([1,0,0]) linearbearing_cover();
+}
+
+module base_traverse_print(){
+    translate([0,0,-30]) base_traverse();
+}
 
     module Y_carrier_hull_R(){ 
 color("blue") 
@@ -250,11 +314,18 @@ module drilling_holes_base(){
     
     translate([-115,-11,-66.5]) cylinder(h=7,r=0.75,$fn=60); 
     translate([-115,-11,-68.5]) cylinder(h=2.01,r1=3.4,r2=0.75,$fn=60);             
-    }   
+       
+    ////X-adjust holes
+    translate([ 140, 11,14.-4]) cylinder(h=10,r=0.9,center=true,$fn=60);
+    translate([ 140,-11,14.-4]) cylinder(h=10,r=0.9,center=true,$fn=60);
+    translate([-140, 11,14.-4]) cylinder(h=10,r=0.9,center=true,$fn=60);
+    translate([-140,-11,14.-4]) cylinder(h=10,r=0.9,center=true,$fn=60);
+    
+}     
     
 module linearbearing_cover(){
 //linear bearing
-        difference(){ union(){
+        color("blue") difference(){ union(){
         color("orange") translate([132,25,-22]) rotate([90,0]) cylinder(h=3,r=7.5,center=true);
         color("orange") translate([147,25,-48]) rotate([90,0]) cylinder(h=3,r=7.5,center=true); 
         translate([132,27,-22]) rotate([90,0]) cylinder(h=1,r=8.5,center=true);
@@ -304,7 +375,7 @@ module X_gearing(){
                 }
     
     
-module X_carrier_adjust_L(){      
+module X_rod_adjust_L_aligned(){      
         difference(){  
         color("blue")hull(){
         hull(){
@@ -327,6 +398,14 @@ module X_carrier_adjust_L(){
         
         } 
         
-module X_carrier_adjust_R(){  
-        mirror (1,0,0) X_carrier_adjust_L();
-       }                      
+module X_rod_adjust_R_aligned(){  
+        mirror (1,0,0) X_rod_adjust_L_aligned();
+       } 
+       
+ module X_rod_adjust_L_print(){
+    translate([90,0,10]) X_rod_adjust_L_aligned();
+}
+
+ module X_rod_adjust_R_print(){
+    mirror (1,0,0) X_rod_adjust_L_print();
+}

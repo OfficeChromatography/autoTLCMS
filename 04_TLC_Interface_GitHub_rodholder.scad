@@ -1,4 +1,4 @@
-// All Drives 
+// All Drives GitHub v1.1 
 // TLC interface automatisation for camag interface
 // 2019 February by Tim Häbe
 
@@ -6,32 +6,93 @@
 ////////////////////// 
 
 ////Rod holders are designet based on position R front!  
-module rod_holder_all(){   ////y=118 for print 
+
+rod_holder_view();
+rod_adjust_print();   
+rod_holder_print(); 
+
+module rod_holder_view(){
+    rod_adjust_aligned();   
+    rod_holder_aligned();
+}
+
+module rod_adjust_aligned(){ 
+    color("yellow") 
+    difference (){
+        union(){         
+            translate([0,118,0]) mirror ([0,0,0]) rod_adjust();
+            translate([0,118,0]) mirror ([1,0,0]) rod_adjust();
+            translate([0,-28,0]) mirror ([0,1,0]) rod_adjust();
+            translate([0,-28,0]) rotate ([0,0,180]) rod_adjust();     
+            } 
+        mirror([1,0,0]) rods();
+        rods();        
+        }
+    }     
+
+module rod_holder_aligned(){  
     color("yellow") 
     difference (){
         union(){
-            translate([100,-100,0])rod_holder_front_R();
-            translate([-100,-100,0])rod_holder_front_L();
-            translate([100,100,0])rod_holder_back_R();
-            translate([-100,100,0])rod_holder_back_L();
-            translate([0+100,118+100,0])  mirror ([0,0,0]) rod_adjust();
-            translate([0-100,118+100,0])  mirror ([1,0,0]) rod_adjust();
-            translate([0+100,-28-100,0])  mirror ([0,1,0]) rod_adjust();
-            translate([0-100,-28-100,0])  rotate ([0,0,180]) rod_adjust();     
+            rod_holder_front_R();
+            rod_holder_front_L();
+            rod_holder_back_R();
+            rod_holder_back_L();    
             }
-         translate([100,100,0])connection_plate_negativ();
-         translate([-100,100,0])connection_plate_negativ(); 
+        connection_plate_negativ();
+        connection_plate_negativ(); 
         
-        translate([-100,100,0])  mirror([1,0,0]) Y_gearing_out_R();
-        translate([100,100,0])                         Y_gearing_out_R();   
-        translate([-100,-100,0])  mirror([1,0,0]) Y_gearing_out_R();
-        translate([100,-100,0])                         Y_gearing_out_R();   
+        mirror([1,0,0]) Y_gearing_out_R();
+        Y_gearing_out_R();   
+        mirror([1,0,0]) Y_gearing_out_R();
+        Y_gearing_out_R();   
      
-        translate([-100,100,0])  mirror([1,0,0]) rods();
-        translate([100,100,0])                         rods();
-        translate([-100,-100,0])  mirror([1,0,0]) rods();
-        translate([100,-100,0])                         rods();
+        mirror([1,0,0]) rods();
+        rods();
+        mirror([1,0,0]) rods();
+        rods();    
+        }
+    }     
+
+module rod_adjust_print(){
+    color("orange") 
+    difference (){
+        union(){         
+            translate([0+100,118+90,0])  mirror ([0,0,0]) rod_adjust();
+            translate([0-100,118+90,0])  mirror ([1,0,0]) rod_adjust();
+            translate([0+100,-28-90,0])  mirror ([0,1,0]) rod_adjust();
+            translate([0-100,-28-90,0])  rotate ([0,0,180]) rod_adjust();     
+            }           
+        translate([-100, 100,0]) mirror([1,0,0]) rods();
+        translate([ 100, 100,0]) rods();
+        translate([-100,-100,0]) mirror([1,0,0]) rods();
+        translate([ 100,-100,0]) rods();       
+        }
+    }     
+
+module rod_holder_print(){
+    color("yellow") 
+    difference (){
+        union(){
+            translate([ 100,-100,0])rod_holder_front_R();
+            translate([-100,-100,0])rod_holder_front_L();
+            translate([ 100, 100,0])rod_holder_back_R();
+            translate([-100, 100,0])rod_holder_back_L();    
+            }
+        translate([ 100, 100,0])connection_plate_negativ();
+        translate([-100, 100,0])connection_plate_negativ();
+        translate([ 100,-100,0])connection_plate_negativ();
+        translate([-100,-100,0])connection_plate_negativ();  
         
+        translate([-100, 100,0]) mirror([1,0,0]) Y_gearing_out_R();
+        translate([ 100, 100,0]) Y_gearing_out_R();   
+        translate([-100,-100,0]) mirror([1,0,0]) Y_gearing_out_R();
+        translate([ 100,-100,0]) Y_gearing_out_R();   
+     
+        translate([-100, 100,0]) mirror([1,0,0]) rods();
+        translate([ 100, 100,0]) rods();
+        translate([-100,-100,0]) mirror([1,0,0]) rods();
+        translate([ 100,-100,0]) rods();    
         }
     }     
 
@@ -111,7 +172,7 @@ module rod_holder_all(){   ////y=118 for print
     //pedestal holes//
     translate([95,-95,-59]) cylinder(h=4.5, r=2.2,$fn=12);
     translate([95,-95,-64.1]) cylinder(h=5.2, r=4,$fn=12);
-    translate([111,-98,-64.5]) cylinder(h=10, r=2,$fn=12);
+    translate([111,-98,-64.5]) cylinder(h=10, r=2,$fn=12);               
     }
     
     
@@ -309,11 +370,14 @@ module Y_gearing(){
                     color("orange") hull(){
                     rotate([90,0]) cylinder(h=14.6,r=9.5,center=true,$fn=90);  
                     translate([20,0,0]) rotate([90,0]) cylinder(h=14.6,r=9.5,center=true,$fn=90);}
-                    }
-      module rods(){
+                    } 
+                    module rods(){
          //8 mm rod (r=4.15 up to 4.3 
         color("red") translate([132,45,-22]) rotate([90,0]) cylinder(h=285,r=4.3,center=true,$fn=30);
         color("red") translate([147,45,-48]) rotate([90,0]) cylinder(h=285,r=4.3,center=true,$fn=30);
+                           
+        translate([137.8,45,-32]) rotate([90,0]) cylinder(h=260,r=1.5,center=true,$fn=30);
+        translate([141.2,45,-38]) rotate([90,0]) cylinder(h=260,r=1.5,center=true,$fn=30);                
         }          
   
       module rod_adjust(){

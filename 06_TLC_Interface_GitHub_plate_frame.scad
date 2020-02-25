@@ -1,10 +1,48 @@
-// Plate_carrier
+// Plate_carrier GitHub v1.1
 // TLC interface automatisation for camag interface
 // 2019 February by Tim Häbe
 
 ////////// 
 //Adjust X-Axis hight everywhere!!!
 //////Frame/////
+
+plate_frame_view();
+plate_frame_print();
+
+module plate_frame_print(){
+    translate([0,-150,0]) full_plate_frame_print();
+    
+    translate([0,-150,0]) X_carrier_side_L_print();
+    translate([0,-150,0]) X_carrier_side_R_print();
+}
+
+module plate_frame_view(){
+    translate([0,-133,0.1]) full_plate_frame();
+    
+    translate([0,-133,0.1]) X_carrier_side_L_view();
+    translate([0,-133,0.1]) X_carrier_side_R_view();
+}
+
+module X_carrier_side_L_print(){
+    translate([-35,133,50]) X_carrier_side_L();
+}
+
+module X_carrier_side_R_print(){
+    translate([35,133,50]) X_carrier_side_R();
+}
+
+module X_carrier_side_R_view(){
+    translate([20,133,0]) X_carrier_side_R();
+}
+
+module X_carrier_side_L_view(){
+    translate([-20,133,0]) X_carrier_side_L();
+}
+
+module full_plate_frame_print(){
+    translate([0,0,50]) full_plate_frame();
+}
+
  module plate_frame(){    
         difference(){
 
@@ -102,7 +140,7 @@
         translate([-97,-80,4])cube([35,125,10],center=true);
         }
     }
-    module plate_frame_all(){ 
+    module plate_frame_combined(){ 
         difference(){
         union(){
         translate([0,0,0]) rotate([0,0]) plate_frame_m();
@@ -138,8 +176,8 @@ module X_carrier_frame(){
             }
         }
          ///x-rod///  
-        translate([0,-11,4.5]) rotate([0,90]) cylinder(h=303,r=2.4,center=true,$fn=60);
-        translate([0, 11,4.5]) rotate([0,90]) cylinder(h=303,r=2.4,center=true,$fn=60);
+        translate([0,-11,3.5]) rotate([0,90]) cylinder(h=303,r=2.4,center=true,$fn=60);
+        translate([0, 11,3.5]) rotate([0,90]) cylinder(h=303,r=2.4,center=true,$fn=60);
         ////belt screws
         translate([-14,0.1,6.1]) cylinder(h=7,r=2.3,center=true,$fn=60);
         translate([ 14,0.1,6.1]) cylinder(h=7,r=2.3,center=true,$fn=60);      
@@ -189,8 +227,8 @@ module X_carrier(){
             }
         }
          ///x-rod///  
-        translate([0,-11,4.5]) rotate([0,90]) cylinder(h=303,r=2.4,center=true,$fn=60);
-        translate([0, 11,4.5]) rotate([0,90]) cylinder(h=303,r=2.4,center=true,$fn=60);
+        translate([0,-11,3.5]) rotate([0,90]) cylinder(h=303,r=2.4,center=true,$fn=60);
+        translate([0, 11,3.5]) rotate([0,90]) cylinder(h=303,r=2.4,center=true,$fn=60);
         ////belt screws
         translate([-14,0.1,6.1]) cylinder(h=7,r=2.3,center=true,$fn=60);
         translate([ 14,0.1,6.1]) cylinder(h=7,r=2.3,center=true,$fn=60);      
@@ -223,8 +261,8 @@ module X_carrier(){
     }            
 module X_carrier_side_L(){     
         ////Seitenteil
-        difference(){    
-        color("blue")
+        color("blue")difference(){    
+        
         translate([-1.5,0,4.4]) cube([5,33,8.8],center=true);
         
         //// 5 mm schrauben für seitenteile
@@ -237,14 +275,14 @@ module X_carrier_side_L(){
             translate([9,0,3]) rotate([90,0]) cylinder(h=7.4,r=1.75,center=true,$fn=60); 
             translate([-9,0,3]) rotate([90,0]) cylinder(h=7.4,r=1.75,center=true,$fn=60);   
         }          
-        translate([0,-11,3]) rotate([0,90]) cylinder(h=303,r=2.4,center=true,$fn=60);
-        translate([0,11,3]) rotate([0,90]) cylinder(h=303,r=2.4,center=true,$fn=60);
+        translate([0,-11,3.5]) rotate([0,90]) cylinder(h=303,r=2.4,center=true,$fn=60);
+        translate([0,11,3.5]) rotate([0,90]) cylinder(h=303,r=2.4,center=true,$fn=60);
 
        difference(){
-            translate([1.5,-11,3]) rotate([0,90]) cylinder(h=2.6,r=4,center=true,$fn=60);
+            translate([1.5,-11,3.5]) rotate([0,90]) cylinder(h=2.6,r=4,center=true,$fn=60);
             translate([0,-14,-0.75]) cube([5,6,1]);}
             difference(){
-            translate([1.5,11,3]) rotate([0,90]) cylinder(h=2.6,r=4,center=true,$fn=60);     
+            translate([1.5,11,3.5]) rotate([0,90]) cylinder(h=2.6,r=4,center=true,$fn=60);     
             translate([0,8,-0.75]) cube([5,6,1]);}
             }
         }   
