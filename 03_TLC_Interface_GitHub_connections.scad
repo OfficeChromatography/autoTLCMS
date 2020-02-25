@@ -1,8 +1,8 @@
-// All connections
+// All connections GitHub v1.1
 // TLC interface automatisation for camag interface
 // 2019 February by Tim Häbe
 
-module connection_plate(){
+module connection_plate_view(){
     difference(){
         union(){//core square//          
             hull(){
@@ -212,7 +212,7 @@ module connection_plate(){
     
     module connection_plate_print(){   
     difference(){
-        connection_plate();
+        translate([0,0,0.1])connection_plate_view();
         connection_plate_print_cuts();
         }
     }
@@ -231,12 +231,4 @@ module pedestals02(){
         translate([-111,188,-64]) cylinder(h=10, r=1.6,$fn=60);
         }    
     }    
- 
-////////////////////    
-////VIEW////
-module full_view_connections(){
-    color("yellow") translate([0,0,0.01]) connection_plate();
-    pedestals02();  
-    }    
-    
-full_view_connections();    
+    connection_plate_print();
